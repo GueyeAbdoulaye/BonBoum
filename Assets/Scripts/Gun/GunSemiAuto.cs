@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicPistol : Weapon
+public class GunSemiAuto : Weapon
 {
    public override void Shoot(Transform origin){
 
-
     if (ammo > 0 && _cdTime < 0)
         {
-             Debug.Log("Basic  Pistol Teste");
+             Debug.Log("Basic  WeaponController Teste");
 
             _cdTime = fireRate;
 
@@ -25,7 +24,6 @@ public class BasicPistol : Weapon
 
                 ammo--;
                 UIManager.Instance.ChangeAmmoText(ammo.ToString());
-                //ShootServerRpc();
             }
         }  
    }

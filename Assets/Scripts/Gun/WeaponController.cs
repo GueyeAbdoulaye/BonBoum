@@ -6,20 +6,41 @@ using UnityEngine.InputSystem;
 using Unity.Netcode;
 using UnityEngine.Animations;
 
-public class Pistol : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
+
+    public float fireRate = 20f;
+
+    public GameObject cameraGameObject; 
+
+
+    private void FixedUpdate()
+    {
+        if (Input.GetButton("Fire1"))
+        {
+            fire();
+        }
+    }
+
+    private void fire()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cameraGameObject.transform.position, cameraGameObject.transform.forward, out hit))
+        {
+            Debug.DrawLine(cameraGameObject.transform.position, hit.point, Color.white, 1f);
+        }
+    }
+    /* 
     [Header("Basics")]
     public Transform bulletOrigin;
     private bool _isPerformed = false;
 
-    [Header("Pistol Infos")] 
+    [Header("WeaponController Infos")] 
     public int ammo = 10;
     public int maxAmmo = 10;
     public float timeForReload = 2f;
-    public float fireRate;
     public ParticleSystem fxShoot;
     private float _cdTime;
-
     public float damage = 10f;
     
 
@@ -43,8 +64,6 @@ public class Pistol : MonoBehaviour
 
     private void Update()
     {
-        //if (!IsOwner) return;
-        //CoolDown entre les tirs
         if (_cdTime >= 0)
         {
             _cdTime -= Time.deltaTime;
@@ -70,11 +89,9 @@ public class Pistol : MonoBehaviour
 
     public void Fire(InputAction.CallbackContext context)
     {
-        //if (!IsOwner) return;
-        //Listener du bouton de tir
+
         if (context.started)
         {
-            
             _isPerformed = true;
             fxShoot.Play();
             Shoot();
@@ -89,48 +106,15 @@ public class Pistol : MonoBehaviour
         weapons[indexWeapon].Shoot(SetAim());
     }
     
-    /*
-    [ServerRpc]
-    private void ShootServerRpc()
-    {
-        ShootClientRpc();
-    }
-
-    [ClientRpc]
-    private void ShootClientRpc()
-    {
-        if (IsOwner) return; // Ignore sur le client qui a tiré
-
-        //Calcul de la visée, Reset du CD de tir et deduction d'une balle
-        //SetAim();
-        _cdTime = fireRate;
-            
-        //Tir Basic, recupere une balle du PoolingManager
-        GameObject bullet = PoolingManager.Instance.GetPooledObject();
-            
-
-        //Set la position de la balle au bout du canon du pistolet
-        if (bullet != null) {
-            bullet.transform.position = bulletOrigin.position;
-            bullet.transform.rotation = bulletOrigin.rotation;
-
-            //Active la balle
-            bullet.SetActive(true);
-        }
-    }*/
     
     public Transform SetAim()                                                                                                                                                                                             
     {
         //Tir d'un rayon
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
         RaycastHit hit;
-        Debug.Log("Avant le raycast");
+
         if (Physics.Raycast(ray, out hit,layerMask))
         {
-            Debug.Log("Test Raycast");
-
-            Debug.Log(hit.transform.name); 
-
             //Ajustement de notre Aim en fonction du hitPoint, fonctionne avec un AimConstraint
             aim.transform.position = hit.point;
             hitPoint = hit.point;
@@ -144,12 +128,10 @@ public class Pistol : MonoBehaviour
         }
         else
         {
-             Debug.Log("Avant le raycast");
             aim.transform.localPosition = new Vector3(0,0,10 );
         }
-         Debug.Log("FIN");
         return bulletOrigin;
     }
-    
+     */
    
 }
