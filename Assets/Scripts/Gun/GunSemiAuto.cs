@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GunSemiAuto : Weapon
 {
-   public override void Shoot(Transform origin){
+/*    public override void Shoot(Transform origin){
 
     if (ammo > 0 && _cdTime < 0)
         {
@@ -26,5 +26,5 @@ public class GunSemiAuto : Weapon
                 UIManager.Instance.ChangeAmmoText(ammo.ToString());
             }
         }  
-   }
+   } */
 }
